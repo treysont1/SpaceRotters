@@ -8,16 +8,14 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         # self.x, self.y = x, y
         self.rect.center = (x, y)    
-        self.left = False
-        self.right = False
+        # self.left = False
+        # self.right = False
         
-    
-    def move(self):
-        if self.left == True:
-            self.rect.x -= 1
-        if self.right == True:
-            self.rect.x += 1
+    def left(self):
+        self.rect.x -= 1
 
+    def right(self):
+        self.rect.x += 1
 
         
         

@@ -17,25 +17,19 @@ class Controller:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                    
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+                    print("shoot")
+
+            # Movement Function  
             keys = pygame.key.get_pressed()
+
             if keys[pygame.K_LEFT]:
-                self.player.left = True
-            else:
-                self.player.left = False
+                self.player.left()
+
             if keys[pygame.K_RIGHT]:
-                self.player.right = True
-                print("hello)")
-            else: 
-                self.player.right = False
-                # if event.key == pygame.K_RIGHT:
-                #     self.player.right = True
-            # elif event.type == pygame.KEYUP and event.key == pygame.K_LEFT:
-            #     self.player.left = False
-                
-                # elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-                #     self.player.left = False
-                self.player.move()
+                self.player.right()
+        
+          
                
             self.screen.fill("white")
             self.screen.blit(self.player.image, self.player.rect)
