@@ -2,6 +2,7 @@ import pygame
 from src.player import Player
 from src.exit import Exit
 from src.player_projectile import Player_Projectile
+from src.enemies import Enemy
 
 
 class Controller:
@@ -16,6 +17,7 @@ class Controller:
         self.player = Player(self.width // 2, self.height - 150, (50, 50))
         self.exit = Exit(self.width - 15, 15)
         self.player_bullets = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
         self.blaster_sound = pygame.mixer.Sound("assets/blaster_sound.wav")
 
     def mainloop(self):
@@ -30,18 +32,23 @@ class Controller:
                     run = False
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     position = self.player.hitbox.midtop
-                    shot = Player_Projectile(position[0], position[1])
+                    shot = Player_Projectile(*position)
                     self.player_bullets.add(shot)
                     self.blaster_sound.play()
                     print("shoot")
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    enemy = Enemy(*(event.pos))
+                    self.enemies.add(enemy)
                 # if event.type == pygame.MOUSEBUTTONDOWN and self.player.hitbox.collidepoint(event.pos):
                 #     print("Hit")
                 
-            
+            self.enemies.draw(self.screen)
+
             self.player_bullets.draw(self.screen)
 
             self.player_bullets.update(dt)
 
+            pygame.sprite.groupcollide(self.player_bullets, self.enemies, True, True)
             # Movement Function  
             keys = pygame.key.get_pressed()
 

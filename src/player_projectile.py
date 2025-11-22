@@ -12,5 +12,5 @@ class Player_Projectile(pygame.sprite.Sprite):
     def update(self, dt):
         self.rect.centery -= 1 * dt
 
-    # def shoot(self):
+
 
