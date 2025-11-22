@@ -8,8 +8,10 @@ class Player_Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.midbottom = (x, y)
     
-    def update(self, dt):
+    def update(self, screen, dt):
         self.rect.centery -= 1 * dt / 2
+        if not screen.get_rect().contains(self.rect):
+            self.kill()
 
 
 

@@ -58,7 +58,7 @@ class Controller:
 
             self.player_bullets.draw(self.screen)
 
-            self.player_bullets.update(dt)
+            self.player_bullets.update(self.screen, dt)
 
             pygame.sprite.groupcollide(self.player_bullets, self.enemies, True, True)
             # Movement Function  
