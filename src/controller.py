@@ -19,6 +19,7 @@ class Controller:
     def mainloop(self):
         run = True
         while run == True:
+            #dt to cap framerate to make it similar across all platforms
             dt = self.clock.tick(60)
             self.screen.fill("black")
 
@@ -30,8 +31,8 @@ class Controller:
                     shot = Player_Projectile(position[0], position[1])
                     self.player_bullets.add(shot)
                     print("shoot")
-                if event.type == pygame.MOUSEBUTTONDOWN and self.player.hitbox.collidepoint(event.pos):
-                    print("Hit")
+                # if event.type == pygame.MOUSEBUTTONDOWN and self.player.hitbox.collidepoint(event.pos):
+                #     print("Hit")
                 
             
             self.player_bullets.draw(self.screen)
@@ -42,10 +43,10 @@ class Controller:
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_LEFT] and self.player.hitbox.x > 0:
-                self.player.left()
+                self.player.left(dt)
 
             if keys[pygame.K_RIGHT] and self.player.hitbox.right < self.width:
-                self.player.right()
+                self.player.right(dt)
             
 
             self.screen.blit(self.player.model, self.player.hitbox)

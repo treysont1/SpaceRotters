@@ -10,7 +10,7 @@ class Player_Projectile(pygame.sprite.Sprite):
         # self.projectile = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 40, 40)
     
     def update(self, dt):
-        self.rect.centery -= 3 * dt
+        self.rect.centery -= 1 * dt
 
     # def shoot(self):
 
