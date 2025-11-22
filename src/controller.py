@@ -13,7 +13,7 @@ class Controller:
         self.screen = pygame.display.set_mode()
         self.width, self.height = pygame.display.get_window_size()
 
-        self.player = Player(self.width // 2, self.height //2, (50, 50))
+        self.player = Player(self.width // 2, self.height - 150, (50, 50))
         self.exit = Exit(self.width - 15, 15)
         self.player_bullets = pygame.sprite.Group()
         self.blaster_sound = pygame.mixer.Sound("assets/blaster_sound.wav")
