@@ -35,7 +35,7 @@ class Controller:
                     shot = Player_Projectile(*position)
                     self.player_bullets.add(shot)
                     self.blaster_sound.play()
-                    print("shoot")
+                    # print("shoot")
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     enemy = Enemy(*(event.pos))
                     self.enemies.add(enemy)
