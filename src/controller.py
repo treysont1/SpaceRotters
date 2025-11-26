@@ -51,7 +51,7 @@ class Controller:
                     run = False
                 if event.type == move_down_event:
                     for enemy in self.enemies:
-                        enemy.move_down()
+                        enemy.move_down(self.screen)
                 
                 #  Hitbox Testing
                 #  if event.type == pygame.MOUSEBUTTONDOWN:

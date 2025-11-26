@@ -8,5 +8,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
     
-    def move_down(self):
+    def move_down(self, screen):
         self.rect.centery += 40
+        if not screen.get_rect().contains(self.rect):
+            self.kill()
