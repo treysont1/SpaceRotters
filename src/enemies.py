@@ -7,3 +7,6 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.original_image, (60, 60))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+    
+    def move_down(self):
+        self.rect.centery += 40

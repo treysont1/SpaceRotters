@@ -23,11 +23,24 @@ class Controller:
 
     def mainloop(self):
         run = True
+        move_down = 1000
+        move_down_event = pygame.USEREVENT + 1
+        pygame.time.set_timer(move_down_event, move_down)
+
         while run == True:
             #dt to cap framerate to make it similar across all platforms
             dt = self.clock.tick(60)
             self.screen.fill("black")
-            self.enemy_coords1 = [(455, 240), (595, 240), (735, 240), (875, 240), (1015, 240)]
+            self.enemy_coords1 = [-280, -140, 0, 140, 280]
+
+            if self.setup == 0:
+                for coord in self.enemy_coords1:
+                    enemy = Enemy(self.width // 2 + coord, 30)
+                    self.enemies.add(enemy)
+                self.setup += 1
+            
+            if not self.enemies:
+                self.setup = 0
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN and self.exit.rect.collidepoint(event.pos):
@@ -38,6 +51,9 @@ class Controller:
                     self.player_bullets.add(shot)
                     self.blaster_sound.play()
                     # print("shoot")
+                if event.type == move_down_event:
+                    for enemy in self.enemies:
+                        enemy.move_down()
                 
                 # if event.type == pygame.MOUSEBUTTONDOWN:
                 #     enemy = Enemy(*(event.pos))
@@ -45,14 +61,14 @@ class Controller:
                 #     print(event.pos)
                 # if event.type == pygame.MOUSEBUTTONDOWN and self.player.hitbox.collidepoint(event.pos):
                 #     print("Hit")
-            if self.setup == 0:
-                for coord in self.enemy_coords1:
-                    enemy = Enemy(*(coord))
-                    self.enemies.add(enemy)
-                self.setup += 1
+            # if self.setup == 0:
+            #     for coord in self.enemy_coords1:
+            #         enemy = Enemy(self.width // 2 + coord, 30)
+            #         self.enemies.add(enemy)
+            #     self.setup += 1
             
-            if not self.enemies:
-                self.setup = 0
+            # if not self.enemies:
+            #     self.setup = 0
 
             self.enemies.draw(self.screen)
 
