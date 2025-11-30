@@ -11,7 +11,7 @@ class Controller:
         pygame.mixer.init()
         self.clock = pygame.time.Clock()
 
-        self.screen = pygame.display.set_mode()
+        self.screen = pygame.display.set_mode(size = (800, 700))
         self.width, self.height = pygame.display.get_window_size()
 
         self.player = Player(self.width // 2, self.height - 150, (50, 50))
