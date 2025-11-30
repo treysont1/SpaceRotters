@@ -28,6 +28,9 @@ class Controller:
         move_down = 1000
         move_down_event = pygame.USEREVENT + 1
         pygame.time.set_timer(move_down_event, move_down)
+        # move_right = 500
+        # move_right_event = pygame.USEREVENT + 2
+        # pygame.time.set_timer(move_right_event, move_right)
 
         while run == True:
             #dt to cap framerate to make it similar across all platforms
@@ -52,6 +55,9 @@ class Controller:
                 if event.type == move_down_event:
                     for enemy in self.enemies:
                         enemy.move_down(self.screen)
+                # if event.type == move_right_event:
+                #     for enemy in self.enemies:
+                #         enemy.move_right(self.width)
                 
                 #  Hitbox Testing
                 #  if event.type == pygame.MOUSEBUTTONDOWN:

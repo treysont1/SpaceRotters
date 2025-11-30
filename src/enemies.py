@@ -12,3 +12,9 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.centery += 40
         if not screen.get_rect().contains(self.rect):
             self.kill()
+    
+    # def move_right(self, width):
+    #     if self.rect.right < width:
+    #         self.rect.centerx += 10
+    #     elif self.rect.left >= 0:
+    #         self.rect.centerx -= 10
