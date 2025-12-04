@@ -119,14 +119,16 @@ class Controller:
                         enemy_shot_timer = random.randint(500, 1000)
                     pygame.time.set_timer(enemy_shot_event, enemy_shot_timer)
                     
+                
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_j:
                     shooter = random.choice(list(self.enemies))
                     enemy_shot_position = shooter.rect.midbottom
                     enemy_shot = Enemy_Projectile(*enemy_shot_position)
                     self.enemy_shots.add(enemy_shot)
-                
+
+                #developer tool
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
-                    self.level = 3
+                    run = "Game Over"
 
 
                 #  Hitbox Testing
