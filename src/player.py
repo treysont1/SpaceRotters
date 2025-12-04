@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.original_image = pygame.image.load(img)
         self.image = pygame.transform.scale(self.original_image, size)
-        self.rect = self.model.get_rect()
+        self.rect = self.image.get_rect()
         self.rect.center = (x, y)
         
     def left(self, dt):
