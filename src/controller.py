@@ -13,6 +13,7 @@ class Controller:
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
+        pygame.font.init()
         self.clock = pygame.time.Clock()
 
         self.screen = pygame.display.set_mode(size= (800, 800))
@@ -21,6 +22,7 @@ class Controller:
         self.background = Backgrounds((self.width, self.height), "assets/space_bg.jpg")
         self.start = Start(self.width //2, self.height // 2)
         self.exit = Exit(self.width - 15, 15)
+        self.font = pygame.font.SysFont("Georgia", 30)
 
         self.player = Player(self.width // 2, self.height - 150, (50, 50))
         self.player_group = pygame.sprite.GroupSingle()
@@ -29,7 +31,7 @@ class Controller:
         self.enemies = pygame.sprite.Group()
         self.enemy_shots = pygame.sprite.Group()
         self.blaster_sound = pygame.mixer.Sound("assets/blaster_sound.wav")
-        self.setup = 0
+        self.level = 1
         self.last_shot = 0
         self.shot_cooldown = 500
 
@@ -55,28 +57,46 @@ class Controller:
 
         enemy_speed = 20
         # enemy_shot_timer = 750
-        enemy_shot_timer = random.randint(750, 1250)
+        enemy_shot_timer = random.randint(1000, 1250)
         enemy_shot_event = pygame.USEREVENT + 2
         pygame.time.set_timer(enemy_shot_event, enemy_shot_timer)
+
+        score = 0
                 
         while run == "Game":
             #dt to cap framerate to make it similar across all platforms
             dt = self.clock.tick(60)
             self.screen.blit(self.background.image, (0,0))
             self.enemy_coords1 = [-280, -140, 0, 140, 280]
+            text_surface = self.font.render(f"Score: {score}", True, "white") #Turns the text line into an image that Pygame can draw, font.render(...) creates a text surface,True= smoother text
+            self.screen.blit(text_surface, (10, 0))
             keys = pygame.key.get_pressed()
             current_time = pygame.time.get_ticks()
 
 
-            if self.setup == 0:
+            if self.level == 1:
                 for coord in self.enemy_coords1:
-                    enemy = Enemy(self.width // 2 + coord, 30)
+                    enemy = Enemy(self.width // 2 + coord, 60)
                     self.enemies.add(enemy)
-                self.setup += 1
+                self.level += 1
+
+            if self.level == 2 and not self.enemies:
+                for coord in self.enemy_coords1:
+                    enemy1 = Enemy(self.width // 2 + coord, 60)
+                    enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
+                    self.enemies.add(enemy1, enemy2)
+                self.level += 1
+                
+            if self.level == 3 and not self.enemies:
+                for coord in self.enemy_coords1:
+                    enemy1 = Enemy(self.width // 2 + coord, 60)
+                    enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
+                    enemy3 = Enemy(self.width // 2 + coord, 190)
+                    self.enemies.add(enemy1, enemy2, enemy3)
+                self.level += 1
             
-            if not self.enemies:
-                self.setup = 0
-           
+            if self.level == 4 and not self.enemies:
+                run = "Game Over"
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN and self.exit.rect.collidepoint(event.pos):
@@ -91,7 +111,12 @@ class Controller:
                     enemy_shot_position = shooter.rect.midbottom
                     enemy_shot = Enemy_Projectile(*enemy_shot_position)
                     self.enemy_shots.add(enemy_shot)
-                    enemy_shot_timer = random.randint(750, 1250)
+                    if self.level == 1:
+                        enemy_shot_timer = random.randint(1000, 1250)
+                    elif self.level == 2:
+                        enemy_shot_timer = random.randint(750, 1000)
+                    elif self.level == 3:
+                        enemy_shot_timer = random.randint(500, 1000)
                     pygame.time.set_timer(enemy_shot_event, enemy_shot_timer)
                     
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_j:
@@ -99,6 +124,9 @@ class Controller:
                     enemy_shot_position = shooter.rect.midbottom
                     enemy_shot = Enemy_Projectile(*enemy_shot_position)
                     self.enemy_shots.add(enemy_shot)
+                
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                    self.level = 3
 
 
                 #  Hitbox Testing
@@ -170,7 +198,8 @@ class Controller:
             self.player_bullets.draw(self.screen)
             self.player_bullets.update(self.screen, dt)
 
-            pygame.sprite.groupcollide(self.player_bullets, self.enemies, True, True)
+            if pygame.sprite.groupcollide(self.player_bullets, self.enemies, True, True):
+                score += 25
 
             if not self.player_group or reach_player:
                 run = "Game Over"
