@@ -54,8 +54,9 @@ class Controller:
         pygame.time.set_timer(move_event, move_timer)
 
         enemy_speed = 20
-        enemy_shot_timer = 750
-        enemy_shot_event = pygame.USEREVENT + 2
+        # enemy_shot_timer = 750
+        # enemy_shot_event = pygame.USEREVENT + 2
+        # pygame.time.set_timer(enemy_shot_event, enemy_shot_timer)
                 
         while run == "Game":
             #dt to cap framerate to make it similar across all platforms
@@ -93,8 +94,6 @@ class Controller:
                     self.enemy_shots.add(enemy_shot)
 
 
-              
-                
                 #  Hitbox Testing
                 #  if event.type == pygame.MOUSEBUTTONDOWN:
                 #     enemy = Enemy(*(event.pos))
@@ -102,16 +101,23 @@ class Controller:
                 #     print(event.pos)
                 # if event.type == pygame.MOUSEBUTTONDOWN and self.player.rect.collidepoint(event.pos):
                 #     print("Hit")
+
             edge_hit = False
             right_hit = False
             left_hit = False
+            reach_player = False
+
             for enemy in self.enemies:
                 if enemy.rect.right >= self.width:
                     edge_hit = True
                     right_hit = True
+                    break
                 if enemy.rect.left <= 0:
                     edge_hit = True
                     left_hit = True
+                    break
+                if enemy.rect.bottom >= self.player.rect.top:
+                    reach_player = True
                     break
 
             if edge_hit:   
@@ -130,8 +136,6 @@ class Controller:
 
                 pygame.time.set_timer(move_event, move_timer)
         
-            
-
             
             # Movement Function  
             
@@ -161,7 +165,7 @@ class Controller:
 
             pygame.sprite.groupcollide(self.player_bullets, self.enemies, True, True)
 
-            if not self.player_group:
+            if not self.player_group or reach_player:
                 run = "Game Over"
             
 
