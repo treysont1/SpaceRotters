@@ -31,7 +31,7 @@ class Controller:
         self.enemies = pygame.sprite.Group()
         self.enemy_shots = pygame.sprite.Group()
         self.blaster_sound = pygame.mixer.Sound("assets/blaster_sound.wav")
-        self.setup = 0
+        self.level = 1
         self.last_shot = 0
         self.shot_cooldown = 500
 
@@ -57,7 +57,7 @@ class Controller:
 
         enemy_speed = 20
         # enemy_shot_timer = 750
-        enemy_shot_timer = random.randint(750, 1250)
+        enemy_shot_timer = random.randint(1000, 1250)
         enemy_shot_event = pygame.USEREVENT + 2
         pygame.time.set_timer(enemy_shot_event, enemy_shot_timer)
 
@@ -74,15 +74,29 @@ class Controller:
             current_time = pygame.time.get_ticks()
 
 
-            if self.setup == 0:
+            if self.level == 1:
                 for coord in self.enemy_coords1:
                     enemy = Enemy(self.width // 2 + coord, 60)
                     self.enemies.add(enemy)
-                self.setup += 1
+                self.level += 1
+
+            if self.level == 2 and not self.enemies:
+                for coord in self.enemy_coords1:
+                    enemy1 = Enemy(self.width // 2 + coord, 60)
+                    enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
+                    self.enemies.add(enemy1, enemy2)
+                self.level += 1
+                
+            if self.level == 3 and not self.enemies:
+                for coord in self.enemy_coords1:
+                    enemy1 = Enemy(self.width // 2 + coord, 60)
+                    enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
+                    enemy3 = Enemy(self.width // 2 + coord, 190)
+                    self.enemies.add(enemy1, enemy2, enemy3)
+                self.level += 1
             
-            if not self.enemies:
-                self.setup = 0
-           
+            if self.level == 4 and not self.enemies:
+                run = "Game Over"
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN and self.exit.rect.collidepoint(event.pos):
@@ -97,7 +111,12 @@ class Controller:
                     enemy_shot_position = shooter.rect.midbottom
                     enemy_shot = Enemy_Projectile(*enemy_shot_position)
                     self.enemy_shots.add(enemy_shot)
-                    enemy_shot_timer = random.randint(750, 1250)
+                    if self.level == 1:
+                        enemy_shot_timer = random.randint(1000, 1250)
+                    elif self.level == 2:
+                        enemy_shot_timer = random.randint(750, 1000)
+                    elif self.level == 3:
+                        enemy_shot_timer = random.randint(500, 1000)
                     pygame.time.set_timer(enemy_shot_event, enemy_shot_timer)
                     
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_j:
@@ -105,6 +124,9 @@ class Controller:
                     enemy_shot_position = shooter.rect.midbottom
                     enemy_shot = Enemy_Projectile(*enemy_shot_position)
                     self.enemy_shots.add(enemy_shot)
+                
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                    self.level = 3
 
 
                 #  Hitbox Testing
