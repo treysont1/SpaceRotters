@@ -9,7 +9,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = (x, y)
     
     def move_down(self, screen):
-        self.rect.centery += 40
+        self.rect.centery += 50
         if not screen.get_rect().contains(self.rect):
             self.kill()
     

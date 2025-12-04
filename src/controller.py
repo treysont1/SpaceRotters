@@ -1,4 +1,5 @@
 import pygame
+import random
 from src.player import Player
 from src.background import Backgrounds
 from src.buttons import Start, Exit
@@ -43,14 +44,11 @@ class Controller:
                 if event.type == pygame.MOUSEBUTTONDOWN and self.start.rect.collidepoint(event.pos):
                     run = "Game"
 
-        move_down = 1000
-        move_down_event_id = pygame.USEREVENT + 1
-        # move_down_event = pygame.event.Event(move_down_event_id)
-        # pygame.time.set_timer(move_down_event, move_down)
-        move_timer = 500
+        
+        move_timer = 750
         move_event = pygame.USEREVENT + 2
         pygame.time.set_timer(move_event, move_timer)
-        enemy_speed = 10
+        enemy_speed = 20
 
                 
         while run == "Game":
@@ -72,11 +70,7 @@ class Controller:
             if not self.enemies:
                 self.setup = 0
 
-            # for enemy in self.enemies:
-            #     if enemy.rect.right >= self.width or enemy.rect.left <= 0:
-            #         for enemy in self.enemies:
-            #             enemy.move_down(self.screen)
-            #         enemy_speed = - (enemy_speed + 2)
+           
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN and self.exit.rect.collidepoint(event.pos):
@@ -96,26 +90,34 @@ class Controller:
                 # if event.type == pygame.MOUSEBUTTONDOWN and self.player.hitbox.collidepoint(event.pos):
                 #     print("Hit")
             edge_hit = False
-            # direction_changed = False 
-
+            right_hit = False
+            left_hit = False
             for enemy in self.enemies:
-                if enemy.rect.right >= self.width or enemy.rect.left <= 0:
+                if enemy.rect.right >= self.width:
                     edge_hit = True
-                    for enemy in self.enemies:
-                        if enemy.rect.right >= self.width:
-                            enemy.rect.right -= 10
-                        if enemy.rect.left <= 0:
-                            enemy.rect.left += 10
+                    right_hit = True
+                if enemy.rect.left <= 0:
+                    edge_hit = True
+                    left_hit = True
                     break
 
-            if edge_hit:    
+            if edge_hit:   
+                if right_hit: 
+                    for enemy in self.enemies:
+                        enemy.rect.right -= abs(enemy_speed)
+                if left_hit:
+                    for enemy in self.enemies:
+                        enemy.rect.left += abs(enemy_speed)
                 for enemy in self.enemies:   
                     enemy.move_down(self.screen)
+
                 enemy_speed = - (enemy_speed)
-                # direction_changed = True
+                if move_timer > 350:
+                    move_timer -= 50
+                print(move_timer)
+                pygame.time.set_timer(move_event, move_timer)
+        
             
-            # if not edge_hit:
-            #     direction_changed = False
 
             self.enemies.draw(self.screen)
 
