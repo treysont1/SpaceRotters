@@ -5,6 +5,7 @@ from src.background import Backgrounds
 from src.buttons import Start, Exit
 from src.player_projectile import Player_Projectile
 from src.enemies import Enemy
+from src.enemy_projectile import Enemy_Projectile
 
 
 
@@ -24,6 +25,7 @@ class Controller:
         self.exit = Exit(self.width - 15, 15)
         self.player_bullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
+        self.enemy_shots = pygame.sprite.Group()
         self.blaster_sound = pygame.mixer.Sound("assets/blaster_sound.wav")
         self.setup = 0
         self.last_shot = 0
@@ -82,6 +84,9 @@ class Controller:
                 
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_j:
                     shooter = random.choice(self.enemies)
+                    enemy_shot_position = shooter.midbottom
+                    enemy_shot = Enemy_Projectile(*enemy_shot_position)
+                    self.enemy_shots.add(enemy_shot)
 
 
               
@@ -143,6 +148,8 @@ class Controller:
                     self.last_shot = current_time
 
             self.enemies.draw(self.screen)
+            self.enemy_shots.draw(self.screen)
+            self.enemy_shots.update(self.screen, dt)
             self.player_bullets.draw(self.screen)
             self.player_bullets.update(self.screen, dt)
 
