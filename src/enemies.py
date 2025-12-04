@@ -13,8 +13,11 @@ class Enemy(pygame.sprite.Sprite):
         if not screen.get_rect().contains(self.rect):
             self.kill()
     
-    # def move_right(self, width):
-    #     if self.rect.right < width:
-    #         self.rect.centerx += 10
-    #     elif self.rect.left >= 0:
-    #         self.rect.centerx -= 10
+    def move(self, enemy_speed):
+        self.rect.centerx += enemy_speed
+
+
+        # if self.rect.right < width:
+        #     self.rect.centerx += 10
+        # elif self.rect.left >= 0:
+        #     self.rect.centerx -= 10
