@@ -55,7 +55,7 @@ class Controller:
 
         enemy_speed = 20
         # enemy_shot_timer = 750
-        enemy_shot_timer = random.randint(500, 1000)
+        enemy_shot_timer = random.randint(750, 1250)
         enemy_shot_event = pygame.USEREVENT + 2
         pygame.time.set_timer(enemy_shot_event, enemy_shot_timer)
                 
@@ -91,7 +91,7 @@ class Controller:
                     enemy_shot_position = shooter.rect.midbottom
                     enemy_shot = Enemy_Projectile(*enemy_shot_position)
                     self.enemy_shots.add(enemy_shot)
-                    enemy_shot_timer = random.randint(500, 1000)
+                    enemy_shot_timer = random.randint(750, 1250)
                     pygame.time.set_timer(enemy_shot_event, enemy_shot_timer)
                     
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_j:
