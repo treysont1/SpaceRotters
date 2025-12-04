@@ -6,10 +6,10 @@ class Enemy_Projectile(pygame.sprite.Sprite):
         self.original_image = pygame.image.load(img)
         self.image = pygame.transform.scale(self.original_image, (9, 25))
         self.rect = self.image.get_rect()
-        self.rect.midbottom = (x, y)
+        self.rect.midtop = (x, y)
     
-    # def update(self, screen, dt):
-    #     self.rect.centery -= 1 * dt / 2
-    #     if not screen.get_rect().contains(self.rect):
-    #         self.kill()
+    def update(self, screen, dt):
+        self.rect.centery += 1 * dt / 2
+        if not screen.get_rect().contains(self.rect):
+            self.kill()
 
