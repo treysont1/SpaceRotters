@@ -119,6 +119,8 @@ class Controller:
                     level += 1
                 
                 if level == 4 and not self.enemies:
+                    for group in self.groups:
+                        group.empty()
                     run = "Winner"
 
                 for event in pygame.event.get():
@@ -156,7 +158,9 @@ class Controller:
                     #developer tool
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
                         # run = "Game Over"
-                        lives += 1
+                        run = "Winner"
+                        for group in self.groups:
+                            group.empty()
                         print(lives)
 
 
