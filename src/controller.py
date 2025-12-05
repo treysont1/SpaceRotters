@@ -28,7 +28,6 @@ class Controller:
         self.restart = Replay(self.width // 2 , self.height // 1.4)
         self.exit = Exit(self.width - 15, 15)
         self.font = pygame.font.Font("assets/retrostyle.ttf", 30)
-
         self.player = Player(self.width // 2, self.height - 150, (50, 50))
         self.player_group = pygame.sprite.GroupSingle()
         self.player_group.add(self.player)
@@ -51,6 +50,8 @@ class Controller:
                 self.screen.blit(self.title.logo, self.title.rect)
                 self.screen.blit(self.start.image, self.start.rect)
                 self.screen.blit(self.exit.exit_button, self.exit.rect)
+                instructions = self.font.render('Click "Start" to Play', True, "white")
+                self.screen.blit(instructions, (250, self.height - 30))
                 pygame.display.flip()
                 
 
@@ -87,7 +88,7 @@ class Controller:
                 text_surface = self.font.render(f"Score: {score}", True, "white")
                 self.screen.blit(text_surface, (10, 0))
                 instructions = self.font.render("right & left arrows to move | spacebar to shoot", True, "white")
-                self.screen.blit(instructions, (20, self.height - 30))
+                self.screen.blit(instructions, (40, self.height - 30))
                 keys = pygame.key.get_pressed()
                 current_time = pygame.time.get_ticks()
 
@@ -113,7 +114,7 @@ class Controller:
                     for coord in self.enemy_coords1:
                         enemy1 = Enemy(self.width // 2 + coord, 60)
                         enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
-                        enemy3 = Enemy(self.width // 2 + coord, 190)
+                        enemy3 = Enemy(self.width // 2 + coord, 190, "assets/shark.png")
                         self.enemies.add(enemy1, enemy2, enemy3)
                     level += 1
                 
@@ -258,6 +259,10 @@ class Controller:
                 self.screen.blit(self.winner.logo, self.winner.rect)
                 self.screen.blit(self.restart.image, self.restart.rect)
                 self.screen.blit(self.exit.exit_button, self.exit.rect)
+                text_surface = self.font.render(f"Score: {score}", True, "white")
+                self.screen.blit(text_surface, (0, 0))
+                instructions = self.font.render('Click "Play Again" to Play', True, "white")
+                self.screen.blit(instructions, (230, self.height - 30))
                 pygame.display.flip()
 
                 for event in pygame.event.get():
@@ -273,6 +278,10 @@ class Controller:
                 self.screen.blit(self.loser.logo, self.loser.rect)
                 self.screen.blit(self.restart.image, self.restart.rect)
                 self.screen.blit(self.exit.exit_button, self.exit.rect)
+                text_surface = self.font.render(f"Score: {score}", True, "white")
+                self.screen.blit(text_surface, (0,0))
+                instructions = self.font.render('Click "Play Again" to Play', True, "white")
+                self.screen.blit(instructions, (230, self.height - 30))
                 pygame.display.flip()
 
                 for event in pygame.event.get():
