@@ -135,7 +135,7 @@ class Controller:
 
                     if event.type == move_event and player_alive:
                         for enemy in self.enemies:
-                            enemy.move(enemy_speed)
+                            enemy.move_horizontally(enemy_speed)
 
                     if event.type == enemy_shot_event and player_alive:
                         shooter = random.choice(list(self.enemies))
