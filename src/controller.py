@@ -260,6 +260,7 @@ class Controller:
 
                 if pygame.sprite.groupcollide(self.player_group, self.enemy_shots, True, True):
                     lives -= 1
+                    score -= 100
                     if blasters > 1:
                         blasters -= 1
                     self.enemy_shots.empty()
