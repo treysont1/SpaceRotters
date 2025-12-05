@@ -1,7 +1,7 @@
 import pygame
 import random
 from src.player import Player
-from src.titles import BrainRotters, Loser
+from src.titles import BrainRotters, Winner, Loser
 from src.background import Backgrounds
 from src.buttons import Start, Replay, Exit
 from src.player_projectile import Player_Projectile
@@ -23,10 +23,11 @@ class Controller:
         self.background = Backgrounds((self.width, self.height), "assets/space_bg.jpg")
         self.title = BrainRotters(self.width * 0.5, self.height * 0.4)
         self.loser = Loser(self.width * 0.5, self.height * 0.4)
+        self.winner = Winner(self.width * 0.5, self.height * 0.4)
         self.start = Start(self.width // 2 , self.height // 1.4)
         self.restart = Replay(self.width // 2 , self.height // 1.4)
         self.exit = Exit(self.width - 15, 15)
-        self.font = pygame.font.SysFont("Georgia", 30)
+        self.font = pygame.font.Font("assets/retrostyle.ttf", 30)
 
         self.player = Player(self.width // 2, self.height - 150, (50, 50))
         self.player_group = pygame.sprite.GroupSingle()
@@ -51,6 +52,7 @@ class Controller:
                 self.screen.blit(self.start.image, self.start.rect)
                 self.screen.blit(self.exit.exit_button, self.exit.rect)
                 pygame.display.flip()
+                
 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN and self.exit.rect.collidepoint(event.pos):
@@ -75,7 +77,8 @@ class Controller:
             player_alive = True
 
             respawn_event = pygame.USEREVENT + 3
-                    
+
+            #game play        
             while run == "Game":
                 #dt to cap framerate to make it similar across all platforms
                 dt = self.clock.tick(60)
@@ -83,6 +86,8 @@ class Controller:
                 self.enemy_coords1 = [-280, -140, 0, 140, 280]
                 text_surface = self.font.render(f"Score: {score}", True, "white")
                 self.screen.blit(text_surface, (10, 0))
+                instructions = self.font.render("right & left arrows to move | spacebar to shoot", True, "white")
+                self.screen.blit(instructions, (20, self.height - 30))
                 keys = pygame.key.get_pressed()
                 current_time = pygame.time.get_ticks()
 
@@ -247,7 +252,21 @@ class Controller:
         
                 pygame.display.flip()
 
-            #User loses screen
+            while run == "Winner":
+                self.screen.fill((0, 0, 0))
+                self.screen.blit(self.background.image, (0,0))
+                self.screen.blit(self.winner.logo, self.winner.rect)
+                self.screen.blit(self.restart.image, self.restart.rect)
+                self.screen.blit(self.exit.exit_button, self.exit.rect)
+                pygame.display.flip()
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN and self.exit.rect.collidepoint(event.pos):
+                        run = False
+                    elif event.type == pygame.MOUSEBUTTONDOWN and self.restart.rect.collidepoint(event.pos):
+                        run = "Game"
+
+            #Lose screen
             while run == "Loser":
                 self.screen.fill((0, 0, 0))
                 self.screen.blit(self.background.image, (0,0))
