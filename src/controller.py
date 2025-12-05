@@ -105,6 +105,8 @@ class Controller:
                     level += 1
 
                 if level == 2 and not self.enemies:
+                    for group in self.groups:
+                        group.empty()
                     for coord in self.enemy_coords1:
                         enemy1 = Enemy(self.width // 2 + coord, 60)
                         enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
@@ -113,6 +115,8 @@ class Controller:
                     blasters += 1
                     
                 if level == 3 and not self.enemies:
+                    for group in self.groups:
+                        group.empty()
                     for coord in self.enemy_coords1:
                         enemy1 = Enemy(self.width // 2 + coord, 60)
                         enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
@@ -160,7 +164,6 @@ class Controller:
                     #developer tool
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_d:
                         # run = "Game Over"
-                        run = "Winner"
                         for group in self.groups:
                             group.empty()
 
@@ -170,8 +173,11 @@ class Controller:
                     #     enemy = Enemy(*(event.pos))
                     #     self.enemies.add(enemy)
                     #     print(event.pos)
-                    # if event.type == pygame.MOUSEBUTTONDOWN and self.player.rect.collidepoint(event.pos):
-                    #     print("Hit")
+                    # and self.player.rect.collidepoint(event.pos)
+                    # if event.type == pygame.MOUSEBUTTONDOWN:
+                    #     for enemy in self.enemies:
+                    #         if enemy.rect.collidepoint(event.pos):
+                    #             print("Hit")
 
                 edge_hit = False
                 right_hit = False
@@ -199,7 +205,7 @@ class Controller:
                         for enemy in self.enemies:
                             enemy.rect.left += abs(enemy_speed)
                     for enemy in self.enemies:   
-                        enemy.move_down(self.screen)
+                        enemy.move_down()
 
                     enemy_speed = - (enemy_speed)
                     if move_timer > 350:
@@ -253,8 +259,12 @@ class Controller:
                 self.player_shots.draw(self.screen)
                 self.player_shots.update(self.screen, dt)
 
-                if pygame.sprite.groupcollide(self.player_shots, self.enemies, True, True):
-                    score += 25
+                for player_shot in self.player_shots:
+                    enemy_hit = pygame.sprite.spritecollideany(player_shot, self.enemies)
+                    if enemy_hit:
+                        enemy_hit.kill()
+                        player_shot.kill()
+                        score += 25
 
                 if pygame.sprite.groupcollide(self.player_group, self.enemy_shots, True, True):
                     lives -= 1
