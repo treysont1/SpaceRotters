@@ -15,8 +15,8 @@ class Controller:
         pygame.init()
         pygame.mixer.init()
         pygame.font.init()
+        
         self.clock = pygame.time.Clock()
-
         self.screen = pygame.display.set_mode(size= (800, 700))
         self.width, self.height = pygame.display.get_window_size()
         pygame.display.set_caption("Space Rotters")
