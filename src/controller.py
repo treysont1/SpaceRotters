@@ -76,10 +76,12 @@ class Controller:
             score = 0
             lives = 3
             blasters = 1
-            player_alive = True
 
             respawn_event = pygame.USEREVENT + 3
+            
 
+            self.player = Player(self.width // 2, self.height - 150, (50, 50))
+            self.player_group.add(self.player)
             #game play        
             while run == "Game":
                 #dt to cap framerate to make it similar across all platforms
@@ -93,10 +95,6 @@ class Controller:
                 keys = pygame.key.get_pressed()
                 current_time = pygame.time.get_ticks()
 
-                if lives > 0 and not self.player_group:
-                    self.player = Player(self.width // 2, self.height - 150, (50, 50))
-                    self.player_group.add(self.player)
-
 
                 if level == 1:
                     for coord in self.enemy_coords1:
@@ -106,28 +104,31 @@ class Controller:
 
                 if level == 2 and not self.enemies:
                     for group in self.groups:
-                        group.empty()
+                        if group != self.player_group:
+                            group.empty()
                     for coord in self.enemy_coords1:
                         enemy1 = Enemy(self.width // 2 + coord, 60)
                         enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
                         self.enemies.add(enemy1, enemy2)
-                    level += 1
                     blasters += 1
+                    level += 1
                     
                 if level == 3 and not self.enemies:
                     for group in self.groups:
-                        group.empty()
+                        if group != self.player_group:
+                            group.empty()
                     for coord in self.enemy_coords1:
                         enemy1 = Enemy(self.width // 2 + coord, 60)
                         enemy2 = Enemy(self.width // 2 + coord, 125, "assets/skibiditoilet.png")
                         enemy3 = Enemy(self.width // 2 + coord, 190, "assets/shark.png")
                         self.enemies.add(enemy1, enemy2, enemy3)
-                    level += 1
                     blasters += 1
+                    level += 1
                 
                 if level == 4 and not self.enemies:
                     for group in self.groups:
                         group.empty()
+                    self.player.is_alive = False
                     run = "Winner"
 
                 for event in pygame.event.get():
@@ -135,13 +136,14 @@ class Controller:
                         run = False
                     
                     if event.type == respawn_event:
-                        player_alive = True
+                        self.player.is_alive = True
+                        self.player.respawn(self.width // 2, self.height - 150)
 
-                    if event.type == move_event and player_alive:
+                    if event.type == move_event and self.player.is_alive:
                         for enemy in self.enemies:
                             enemy.move_horizontally(enemy_speed)
 
-                    if event.type == enemy_shot_event and player_alive:
+                    if event.type == enemy_shot_event and self.player.is_alive:
                         shooter = random.choice(list(self.enemies))
                         enemy_shot_position = shooter.rect.midbottom
                         enemy_shot = Enemy_Projectile(*enemy_shot_position)
@@ -215,7 +217,7 @@ class Controller:
             
                 
                 # Movement Function  
-                if player_alive:
+                if self.player.is_alive:
                     if keys[pygame.K_LEFT] and self.player.rect.left > 0:
                         self.player.left(dt)
 
@@ -265,21 +267,23 @@ class Controller:
                         enemy_hit.kill()
                         player_shot.kill()
                         score += 25
-
-                if pygame.sprite.groupcollide(self.player_group, self.enemy_shots, True, True):
+                
+                if pygame.sprite.groupcollide(self.player_group, self.enemy_shots, False, True):
                     lives -= 1
                     score -= 100
                     if blasters > 1:
                         blasters -= 1
                     self.enemy_shots.empty()
                     self.player_shots.empty()
-                    player_alive = False
+                    self.player.is_alive = False
+                    self.player.die()
                     pygame.time.set_timer(respawn_event, 1500, 1)
 
-                if (not self.player_group and lives == 0) or reach_player:
+                if (not self.player.is_alive and lives == 0) or reach_player:
                     for group in self.groups:
                         group.empty()
-                    
+                    print(not self.player_group and lives == 0)
+                    print(reach_player)
                     run = "Loser"
 
                 self.player_group.draw(self.screen)
