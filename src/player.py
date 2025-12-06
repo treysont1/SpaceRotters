@@ -18,8 +18,10 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += 1 * dt / 2
 
     def die(self):
-        self.explosion = pygame.image.load("assets/explosion_pixel_art.png").convert_alpha()
-        self.image = pygame.transform.scale(self.explosion, self.size)
+        self.explosion = pygame.image.load("assets/explosion_pixel_art.png")
+        self.image = pygame.transform.scale(self.explosion, (75, 75))
+        self.rect.centerx -= 10
+        self.rect.centery -= 5
     
     def respawn(self, x, y):
         self.image = pygame.transform.scale(self.original_image, self.size)
