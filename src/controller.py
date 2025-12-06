@@ -36,6 +36,9 @@ class Controller:
         self.enemy_shots = pygame.sprite.Group()
         self.groups = (self.player_group, self.player_shots, self.enemies, self.enemy_shots)
         self.blaster_sound = pygame.mixer.Sound("assets/blaster_sound.wav")
+        self.blaster_sound.set_volume(0.1)
+        self.player_explosion_sound = pygame.mixer.Sound("assets/player_ship_explosion.wav")
+        self.player_explosion_sound.set_volume(0.2)
         self.last_shot = 0
         self.shot_cooldown = 500
 
@@ -277,6 +280,7 @@ class Controller:
                     self.player_shots.empty()
                     self.player.is_alive = False
                     self.player.die()
+                    self.player_explosion_sound.play()
                     pygame.time.set_timer(respawn_event, 1500, 1)
 
                 if (not self.player.is_alive and lives == 0) or reach_player:
