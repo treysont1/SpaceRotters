@@ -282,8 +282,6 @@ class Controller:
                 if (not self.player.is_alive and lives == 0) or reach_player:
                     for group in self.groups:
                         group.empty()
-                    print(not self.player_group and lives == 0)
-                    print(reach_player)
                     run = "Loser"
 
                 self.player_group.draw(self.screen)
