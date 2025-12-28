@@ -23,9 +23,9 @@
 2. random (used to generate random intergers for randomization of shot speed)
 ### Classes
 - Player: Creates the ship that the player will be controlling to play the game, uss the fighter jet png.
-- player_projectile: Creates the projectiles that are launched from the player.
+- Player_Projectile: Creates the projectiles that are launched from the player.
 - Enemies: Creates the enemy brainrot characters that the player has to defeat.
-- enemy_projectile: Creates the projectiles that are launched from the player.
+- Enemy_Projectile: Creates the projectiles that are launched from the player.
 - Background: Creates and stores a sprite or image.
 - Start: Creates a start button for the game.
 - Replay: Creates a replay button for when the game ends.
@@ -71,9 +71,9 @@ Test Description: Verify that the user can play after losing or winning
 | Step |Procedure |Expected Results |
 | 1 | Start game |GUI window appears with start screen
 | 2 | Play until end and eliminate all enemies | winner screen should appear with score
-| 3 | Click "Play Agin" button | game restarts and player score is set back to 0
+| 3 | Click "Play Again" button | game restarts and player score is set back to 0
 | 4 | Get hit by enemies three times | loser screen should appear with score
-| 5 | Click "Play Agin" button | game restarts and player score is set back to 0
+| 5 | Click "Play Again" button | game restarts and player score is set back to 0
 
 
 
