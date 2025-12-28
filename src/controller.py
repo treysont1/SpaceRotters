@@ -1,8 +1,9 @@
 import pygame
 import random
+import cv2
 from src.player import Player
 from src.titles import BrainRotters, Winner, Loser
-from src.background import Backgrounds
+from src.background import Backgrounds, vidbg
 from src.buttons import Start, Replay, Exit
 from src.player_projectile import Player_Projectile
 from src.enemies import Enemy
@@ -45,24 +46,25 @@ class Controller:
     def mainloop(self):
         run = "Start"
 
-        while True:
-            #title screen
-            while run == "Start":
-                self.screen.fill((0,0,0))
-                self.screen.blit(self.background.image, (0,0))
-                self.screen.blit(self.title.logo, self.title.rect)
-                self.screen.blit(self.start.image, self.start.rect)
-                self.screen.blit(self.exit.exit_button, self.exit.rect)
-                instructions = self.font.render('Click "Start" to Play', True, "white")
-                self.screen.blit(instructions, (250, self.height - 30))
-                pygame.display.flip()
-                
+        #while True:
+            
+        #title screen
+        while run == "Start":
+            self.screen.fill((0,0,0))
+            self.screen.blit(self.background.image, (0,0))
+            self.screen.blit(self.title.logo, self.title.rect)
+            self.screen.blit(self.start.image, self.start.rect)
+            self.screen.blit(self.exit.exit_button, self.exit.rect)
+            instructions = self.font.render('Click "Start" to Play', True, "white")
+            self.screen.blit(instructions, (250, self.height - 30))
+            pygame.display.flip()
+        
 
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN and self.exit.rect.collidepoint(event.pos):
-                        run = False
-                    if event.type == pygame.MOUSEBUTTONDOWN and self.start.rect.collidepoint(event.pos):
-                        run = "Game"
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or event.type == pygame.MOUSEBUTTONDOWN and self.exit.rect.collidepoint(event.pos):
+                    run = False
+                if event.type == pygame.MOUSEBUTTONDOWN and self.start.rect.collidepoint(event.pos):
+                    run = "Game"
 
             
             move_timer = 750
@@ -97,7 +99,6 @@ class Controller:
                 self.screen.blit(instructions, (40, self.height - 30))
                 keys = pygame.key.get_pressed()
                 current_time = pygame.time.get_ticks()
-
 
                 if level == 1:
                     for coord in self.enemy_coords1:
@@ -197,6 +198,9 @@ class Controller:
                 
                 # Movement Function  
                 if self.player.is_alive:
+                    if keys[pygame.K_6] and keys[pygame.K_7]:
+                        video = vidbg("assets/trick.mp4")
+
                     if keys[pygame.K_LEFT] and self.player.rect.left > 0:
                         self.player.left(dt)
 
